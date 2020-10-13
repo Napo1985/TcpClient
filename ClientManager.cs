@@ -59,7 +59,7 @@ namespace UserTcpClient
                 //}
 
                 string fullMsg = Console.ReadLine();
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(fullMsg);
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(m_userName + "=>" + fullMsg);
                 m_stream.Write(data, 0, data.Length);
             }
         }
@@ -69,7 +69,7 @@ namespace UserTcpClient
             {
                 Int32 bytes = m_stream.Read(m_dataRecived, 0, m_dataRecived.Length);
                 string responseData = System.Text.Encoding.ASCII.GetString(m_dataRecived, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
+                Console.WriteLine("{0}", responseData);
                 Array.Clear(m_dataRecived, 0, m_dataRecived.Length);
             }
         }
@@ -85,6 +85,7 @@ namespace UserTcpClient
             string responseData = System.Text.Encoding.ASCII.GetString(m_dataRecived, 0, bytes);
             if (responseData.Equals("UR-success"))
             {
+				m_userName = name;
                 Console.WriteLine("Connected");
                 Array.Clear(m_dataRecived, 0, m_dataRecived.Length);
                 return true;
@@ -108,6 +109,8 @@ namespace UserTcpClient
         NetworkStream m_stream = null;
       
         bool m_isConnected = false;
+
+		string m_userName;
         #endregion
     }
 }
